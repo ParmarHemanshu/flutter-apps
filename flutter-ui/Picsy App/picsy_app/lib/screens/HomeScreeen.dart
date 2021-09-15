@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double halfScreenWidth= MediaQuery.of(context).size.width *0.5;
+    double halfScreenWidth = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -65,18 +65,30 @@ class HomeScreen extends StatelessWidget {
             margin: EdgeInsets.only(left: 10, right: 10, top: 20),
             //method for single card build
             child: singleCardBuilder(
-                "Photo Books", "Convert photos to printed photo books", "499", "https://www.picsy.in/images/app/New-App/dashboard/Photobook.jpg"),
+                "Photo Books",
+                "Convert photos to printed photo books",
+                "499",
+                "https://www.picsy.in/images/app/New-App/dashboard/Photobook.jpg"),
           ),
 
           //method for double card build
-          doubleCardsBuilder(halfScreenWidth, "Photo Calenders", "499","https://www.picsy.in/images/app/New-App/dashboard/Calendar.jpg"
-              , "Photo Prints", "399",   "https://www.picsy.in/images/app/New-App/dashboard/Photoprint.jpg"),
+          doubleCardsBuilder(
+              halfScreenWidth,
+              "Photo Calenders",
+              "499",
+              "https://www.picsy.in/images/app/New-App/dashboard/Calendar.jpg",
+              "Photo Prints",
+              "399",
+              "https://www.picsy.in/images/app/New-App/dashboard/Photoprint.jpg"),
 
           Container(
             margin: EdgeInsets.only(left: 10, right: 10, top: 20),
-            child: singleCardBuilder("Canvas Print", "Photos on canvas for walls", "999", "https://www.picsy.in/images/app/New-App/dashboard/Canvas.jpg"),
+            child: singleCardBuilder(
+                "Canvas Print",
+                "Photos on canvas for walls",
+                "999",
+                "https://www.picsy.in/images/app/New-App/dashboard/Canvas.jpg"),
           ),
-
         ],
       ),
       drawer: HomePageDrawer(),
@@ -88,33 +100,33 @@ class HomeScreen extends StatelessWidget {
               icon: Image.network(
                 "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152637_8098.png",
                 height: 24,
-                width:  24,
+                width: 24,
               ),
               label: "Gift Card"),
           BottomNavigationBarItem(
             icon: Image.network(
                 "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152624_79307.png",
-                height:  24,
-                width:  24),
+                height: 24,
+                width: 24),
             label: "Designs",
           ),
           BottomNavigationBarItem(
               icon: Image.network(
                   "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152656_47415.png",
-                  height:  24,
-                  width:  24),
+                  height: 24,
+                  width: 24),
               label: "My Orders"),
           BottomNavigationBarItem(
               icon: Image.network(
                   "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152724_1190.png",
-                  height:  24,
-                  width:  24),
+                  height: 24,
+                  width: 24),
               label: "Albums"),
           BottomNavigationBarItem(
               icon: Image.network(
                   "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152712_80995.png",
-                  height:  24,
-                  width:  24),
+                  height: 24,
+                  width: 24),
               label: "Rewards"),
         ],
       ),
@@ -125,7 +137,6 @@ class HomeScreen extends StatelessWidget {
 class HomePageDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
       child: Drawer(
@@ -218,12 +229,12 @@ class HomePageDrawer extends StatelessWidget {
   }
 }
 
-Card singleCardBuilder(String title, String subtitle, String price,String imageUrl) {
+Card singleCardBuilder(
+    String title, String subtitle, String price, String imageUrl) {
   return Card(
     child: Column(
       children: [
-        Image.network(
-           imageUrl),
+        Image.network(imageUrl),
         Padding(
           padding: EdgeInsets.all(10),
           child: Row(
@@ -241,7 +252,7 @@ Card singleCardBuilder(String title, String subtitle, String price,String imageU
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "₹ "+price,
+                      "₹ " + price,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.redAccent),
                     ),
@@ -266,9 +277,9 @@ Card singleCardBuilder(String title, String subtitle, String price,String imageU
   );
 }
 
-Row doubleCardsBuilder(double width,String title, String price,String imageUrl,
-    String title2, String price2,String imageUrl2){
-  return   Row(
+Row doubleCardsBuilder(double width, String title, String price,
+    String imageUrl, String title2, String price2, String imageUrl2) {
+  return Row(
     children: [
       Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
@@ -278,18 +289,16 @@ Row doubleCardsBuilder(double width,String title, String price,String imageUrl,
             child: Column(
               children: [
                 Container(
-                  child: Image.network(
-                     imageUrl),
+                  child: Image.network(imageUrl),
                 ),
                 Container(
                     margin: EdgeInsets.only(top: 8, left: 8),
                     child: Row(
                       children: [
                         Text(
-                         title,
+                          title,
                           style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ],
                     )),
@@ -302,7 +311,7 @@ Row doubleCardsBuilder(double width,String title, String price,String imageUrl,
                         style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                       Text(
-                        "₹ "+price,
+                        "₹ " + price,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.redAccent),
@@ -322,8 +331,7 @@ Row doubleCardsBuilder(double width,String title, String price,String imageUrl,
           child: Card(
             child: Column(
               children: [
-                Image.network(
-                  imageUrl2),
+                Image.network(imageUrl2),
                 Container(
                   margin: EdgeInsets.only(top: 8, left: 8),
                   child: Row(
@@ -331,8 +339,7 @@ Row doubleCardsBuilder(double width,String title, String price,String imageUrl,
                       Text(
                         title2,
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -346,7 +353,7 @@ Row doubleCardsBuilder(double width,String title, String price,String imageUrl,
                         style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                       Text(
-                        "₹ "+price2,
+                        "₹ " + price2,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.redAccent),
@@ -361,7 +368,4 @@ Row doubleCardsBuilder(double width,String title, String price,String imageUrl,
       )
     ],
   );
-
 }
-
-
