@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:picsy_app/models/Album.dart';
+import 'package:picsy_app/models/AlbumModel.dart';
 import 'package:picsy_app/networking/ApiRequest.dart';
 
 class AlbumScreen extends StatefulWidget {

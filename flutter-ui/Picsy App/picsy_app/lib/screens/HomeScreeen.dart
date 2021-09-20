@@ -1,60 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'AlbumScreen.dart';
+import 'package:picsy_app/widgets/AppBar.dart';
+import 'package:picsy_app/widgets/BottomNavBar.dart';
+import 'package:picsy_app/widgets/Drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double halfScreenWidth = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
-      appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                icon: Icon(Icons.menu));
-          },
-        ),
-        iconTheme: IconThemeData(color: Colors.black),
-        backwardsCompatibility: false,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarColor: Colors.redAccent),
-        backgroundColor: Colors.white,
-        elevation: 1,
-        title: Image.asset(
-          "images/logo.png",
-          height: kToolbarHeight,
-          //  width: 50,
-        ),
-        centerTitle: true,
-        actions: [
-          Icon(
-            Icons.add_alert,
-            size: 24,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 12, bottom: 12, left: 10),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.redAccent,
-              ),
-              onPressed: () => {},
-              child: Text(
-                "chat",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 6, right: 6),
-            child: Icon(
-              Icons.more_vert_rounded,
-              size: 24,
-            ),
-          )
-        ],
-      ),
+      appBar:Appbar(),
       body: ListView(
         children: [
           Container(
@@ -94,150 +48,12 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       drawer: HomePageDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-        fixedColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-              icon: Image.network(
-                "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152637_8098.png",
-                height: 24,
-                width: 24,
-              ),
-              label: "Gift Card"),
-          BottomNavigationBarItem(
-            icon: Image.network(
-                "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152624_79307.png",
-                height: 24,
-                width: 24),
-            label: "Designs",
-          ),
-          BottomNavigationBarItem(
-              icon: Image.network(
-                  "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152656_47415.png",
-                  height: 24,
-                  width: 24),
-              label: "My Orders"),
-          BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AlbumScreen()));
-                },
-                child: Image.network(
-                    "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152724_1190.png",
-                    height: 24,
-                    width: 24),
-              ),
-              label: "Albums"),
-          BottomNavigationBarItem(
-              icon: Image.network(
-                  "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152712_80995.png",
-                  height: 24,
-                  width: 24),
-              label: "Rewards"),
-        ],
-      ),
+      bottomNavigationBar: BottomNavBar()
     );
   }
 }
 
-class HomePageDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.8,
-      child: Drawer(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(color: Colors.redAccent),
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        child: CircleAvatar(
-                            backgroundImage: AssetImage("images/logo.png")),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        child: Text(
-                          "Hemanshu Parmar",
-                          style: TextStyle(color: Colors.white, fontSize: 24),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Image.network(
-                  "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152637_8098.png",
-                  height: 30,
-                  width: 30,
-                ),
-                title: Text("My Gifts"),
-                trailing: Icon(Icons.new_releases, color: Colors.redAccent),
-              ),
-              ListTile(
-                leading: Image.network(
-                    "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152624_79307.png",
-                    height: 30,
-                    width: 30),
-                title: Text("More Designs"),
-              ),
-              ListTile(
-                leading: Image.network(
-                    "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152656_47415.png",
-                    height: 30,
-                    width: 30),
-                title: Text("Categories"),
-              ),
-              ListTile(
-                leading: Image.network(
-                    "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152724_1190.png",
-                    height: 30,
-                    width: 30),
-                title: Text("New Albums"),
-                trailing: Icon(Icons.new_releases, color: Colors.redAccent),
-              ),
-              ListTile(
-                leading: Image.network(
-                    "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152712_80995.png",
-                    height: 30,
-                    width: 30),
-                title: Text("Earn Rewards"),
-                trailing:
-                    Icon(Icons.monetization_on_outlined, color: Colors.green),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 40),
-                child: Column(
-                  children: [
-                    Divider(
-                      height: 4,
-                      color: Colors.black,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.exit_to_app),
-                      title: Text("Log Out"),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+
 
 Card singleCardBuilder(
     String title, String subtitle, String price, String imageUrl) {

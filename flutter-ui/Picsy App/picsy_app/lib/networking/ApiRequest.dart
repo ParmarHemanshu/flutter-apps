@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:picsy_app/models/Album.dart';
+import 'package:picsy_app/models/AlbumModel.dart';
 import 'package:retrofit/http.dart';
 
 part 'ApiRequest.g.dart';
@@ -23,4 +23,5 @@ abstract class ApiRequest {
 
   @GET("/yearbook/getyearbook/28a6883292e53e1df2792d7fcb867108")
   Future<Album> getResponse();
+
 }

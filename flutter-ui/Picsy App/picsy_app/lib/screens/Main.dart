@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:picsy_app/screens/AlbumScreen.dart';
 import 'package:picsy_app/screens/HomeScreeen.dart';
 
 void main() {
