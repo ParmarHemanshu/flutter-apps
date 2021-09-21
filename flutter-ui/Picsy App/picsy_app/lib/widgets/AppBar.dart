@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Appbar extends StatelessWidget implements PreferredSizeWidget{
+class Appbar extends StatelessWidget implements PreferredSizeWidget {
   const Appbar({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
-
     return AppBar(
       leading: Builder(
         builder: (BuildContext context) {
@@ -20,7 +18,7 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget{
       iconTheme: IconThemeData(color: Colors.black),
       backwardsCompatibility: false,
       systemOverlayStyle:
-      SystemUiOverlayStyle(statusBarColor: Colors.redAccent),
+          SystemUiOverlayStyle(statusBarColor: Colors.redAccent),
       backgroundColor: Colors.white,
       elevation: 1,
       title: Image.asset(
@@ -61,6 +59,6 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget{
   @override
   // TODO: implement preferredSize
   Size get preferredSize {
-    return Size.fromHeight(60);
-  } 
+    return Size.fromHeight(56);
+  }
 }

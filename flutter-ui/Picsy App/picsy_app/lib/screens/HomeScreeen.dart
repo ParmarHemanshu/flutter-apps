@@ -8,54 +8,51 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double halfScreenWidth = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
-      appBar:Appbar(),
-      body: ListView(
-        children: [
-          Container(
-            child: Card(
-              child: Image.network(
-                  "https://www.picsy.in/images/app/New-Dashboard/share-album.jpg"),
+        appBar: Appbar(),
+        body: ListView(
+          children: [
+            Container(
+              child: Card(
+                child: Image.network(
+                    "https://www.picsy.in/images/app/New-Dashboard/share-album.jpg"),
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 10, right: 10, top: 20),
-            //method for single card build
-            child: singleCardBuilder(
-                "Photo Books",
-                "Convert photos to printed photo books",
+            Container(
+              margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+              //method for single card build
+              child: _singleCardBuilder(
+                  "Photo Books",
+                  "Convert photos to printed photo books",
+                  "499",
+                  "https://www.picsy.in/images/app/New-App/dashboard/Photobook.jpg"),
+            ),
+
+            //method for double card build
+            _doubleCardsBuilder(
+                halfScreenWidth,
+                "Photo Calenders",
                 "499",
-                "https://www.picsy.in/images/app/New-App/dashboard/Photobook.jpg"),
-          ),
+                "https://www.picsy.in/images/app/New-App/dashboard/Calendar.jpg",
+                "Photo Prints",
+                "399",
+                "https://www.picsy.in/images/app/New-App/dashboard/Photoprint.jpg"),
 
-          //method for double card build
-          doubleCardsBuilder(
-              halfScreenWidth,
-              "Photo Calenders",
-              "499",
-              "https://www.picsy.in/images/app/New-App/dashboard/Calendar.jpg",
-              "Photo Prints",
-              "399",
-              "https://www.picsy.in/images/app/New-App/dashboard/Photoprint.jpg"),
-
-          Container(
-            margin: EdgeInsets.only(left: 10, right: 10, top: 20),
-            child: singleCardBuilder(
-                "Canvas Print",
-                "Photos on canvas for walls",
-                "999",
-                "https://www.picsy.in/images/app/New-App/dashboard/Canvas.jpg"),
-          ),
-        ],
-      ),
-      drawer: HomePageDrawer(),
-      bottomNavigationBar: BottomNavBar()
-    );
+            Container(
+              margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+              child: _singleCardBuilder(
+                  "Canvas Print",
+                  "Photos on canvas for walls",
+                  "999",
+                  "https://www.picsy.in/images/app/New-App/dashboard/Canvas.jpg"),
+            ),
+          ],
+        ),
+        drawer: HomePageDrawer(),
+        bottomNavigationBar: BottomNavBar());
   }
 }
 
-
-
-Card singleCardBuilder(
+Card _singleCardBuilder(
     String title, String subtitle, String price, String imageUrl) {
   return Card(
     child: Column(
@@ -103,7 +100,7 @@ Card singleCardBuilder(
   );
 }
 
-Row doubleCardsBuilder(double width, String title, String price,
+Row _doubleCardsBuilder(double width, String title, String price,
     String imageUrl, String title2, String price2, String imageUrl2) {
   return Row(
     children: [

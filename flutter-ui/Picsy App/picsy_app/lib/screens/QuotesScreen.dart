@@ -15,7 +15,8 @@ class QuotesScreen extends StatefulWidget {
 class _QuotesScreenState extends State<QuotesScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: Appbar(),
       body: _fetchApiData(context),
     ));
@@ -23,10 +24,13 @@ class _QuotesScreenState extends State<QuotesScreen> {
 }
 
 FutureBuilder<Post> _fetchApiData(BuildContext context) {
-  String url="https://gorest.co.in/public/v1";
-  final apiClient =
-  ApiClient(Dio(BaseOptions(contentType: "application/json",connectTimeout: 30000,
-      receiveTimeout: 30000)), baseUrl: url);
+  String url = "https://gorest.co.in/public/v1";
+  final apiClient = ApiClient(
+      Dio(BaseOptions(
+          contentType: "application/json",
+          connectTimeout: 30000,
+          receiveTimeout: 30000)),
+      baseUrl: url);
   return FutureBuilder<Post>(
       future: apiClient.getPosts(),
       builder: (context, snapshot) {
@@ -34,6 +38,7 @@ FutureBuilder<Post> _fetchApiData(BuildContext context) {
         return buildPost(context, posts);
       });
 }
+
 ListView buildPost(BuildContext context, List<Datum>? posts) {
   return ListView.builder(
     itemCount: posts!.length,
@@ -41,24 +46,26 @@ ListView buildPost(BuildContext context, List<Datum>? posts) {
       return Container(
         color: Colors.lightBlueAccent,
         padding: EdgeInsets.all(10),
-        height: MediaQuery.of(context).size.height*0.30,
+        height: MediaQuery.of(context).size.height * 0.30,
         child: Card(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 5,left: 20,right: 20),
+                margin: EdgeInsets.only(top: 5, left: 20, right: 20),
                 child: Text(
-                  posts[index].title,overflow: TextOverflow.ellipsis,
+                  posts[index].title,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,left: 20,right: 20),
+                  margin: EdgeInsets.only(top: 10, left: 20, right: 20),
                   child: Text(
                     posts[index].body,
-                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
                   ),
                 ),
               ),

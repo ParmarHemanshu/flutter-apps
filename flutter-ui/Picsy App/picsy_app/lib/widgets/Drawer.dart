@@ -46,7 +46,7 @@ class HomePageDrawer extends StatelessWidget {
                 trailing: Icon(Icons.new_releases, color: Colors.redAccent),
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => QuotesScreen()));
                 },
@@ -80,7 +80,7 @@ class HomePageDrawer extends StatelessWidget {
                     width: 30),
                 title: Text("Earn Rewards"),
                 trailing:
-                Icon(Icons.monetization_on_outlined, color: Colors.green),
+                    Icon(Icons.monetization_on_outlined, color: Colors.green),
               ),
               Container(
                 margin: EdgeInsets.only(top: 40),
