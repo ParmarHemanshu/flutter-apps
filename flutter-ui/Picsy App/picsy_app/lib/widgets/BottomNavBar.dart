@@ -1,5 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:picsy_app/cubit/AlbumScreenCubit/list_view_cubit.dart';
+import 'package:picsy_app/networking/ApiRequest.dart';
+import 'package:picsy_app/repositories/AlbumRepository.dart';
 import 'package:picsy_app/screens/AlbumScreen.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -7,7 +12,10 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String url = "http://www.demoaws.picsy.in/api/";
+    final apiRequest = ApiRequest(Dio(), baseUrl: url);
     return BottomNavigationBar(
+
       fixedColor: Colors.black,
       type: BottomNavigationBarType.fixed,
       items: [
@@ -34,8 +42,15 @@ class BottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(
             icon: GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AlbumScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            BlocProvider(
+                                create: (context) {
+                                  return ListViewCubit(AlbumRepository(apiRequest));
+                                },
+                                child: AlbumScreen())));
               },
               child: Image.network(
                   "https://s3.ap-south-1.amazonaws.com/picsyinlive/images/user_photos/8350/large/USER_PHOTOS_8350_20210326_152724_1190.png",

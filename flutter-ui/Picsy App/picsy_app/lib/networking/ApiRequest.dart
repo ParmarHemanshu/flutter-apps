@@ -15,7 +15,7 @@ abstract class ApiRequest {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer 950756f02948a64e992eaee4626a4818db59c4ed',
+        'Authorization': 'Bearer 85b3e9922b97d73fc1e7b1145390eeed4776c1be',
       },
     );
     return _ApiRequest(dio, baseUrl: baseUrl);

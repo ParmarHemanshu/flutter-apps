@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:picsy_app/cubit/AlbumScreenCubit/list_view_cubit.dart';
 import 'package:picsy_app/models/AlbumModel.dart';
-import 'package:picsy_app/networking/ApiRequest.dart';
+import 'package:picsy_app/screens/AlbumDetailsScreen.dart';
 
 class AlbumScreen extends StatefulWidget {
   const AlbumScreen({Key? key}) : super(key: key);
@@ -64,43 +66,65 @@ class _AlbumScreenState extends State<AlbumScreen> {
                 )
               ],
             ),
-            body: _responseOnCall(context)));
+            body: Center(
+              child: BlocBuilder<ListViewCubit, ListViewState>(
+                builder: (context, state) {
+                  if (state is ListViewInitial) {
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.redAccent,
+                      strokeWidth: 6,
+                    ));
+                  } else if (state is ListViewLoading) {
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.redAccent,
+                      strokeWidth: 6,
+                    ));
+                  } else if (state is ListViewLoaded) {
+                    final albums = state.bookDataList;
+                    return _buildListView(context, albums);
+                  }
+                  return Text("Error");
+                },
+              ),
+            )));
   }
 }
 
-FutureBuilder<Album> _responseOnCall(BuildContext context) {
-  String url = "http://www.demoaws.picsy.in/api/";
-  final apiClient = ApiRequest(Dio(), baseUrl: url);
-  return FutureBuilder<Album>(
-      future: apiClient.getResponse(),
-      builder: (context, snapshot) {
-        try {
-          if (snapshot.connectionState == ConnectionState.done) {
-            final List<BookData>? listData = snapshot.data?.response!.bookData;
-            return _buildListView(context, listData!);
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            print("Waiting for Connection..");
-          } else if (snapshot.connectionState == ConnectionState.active) {
-            print("Connected successfully");
-          } else {
-            Center(
-              child: CircularProgressIndicator(
-                color: Colors.redAccent,
-                strokeWidth: 5,
-              ),
-            );
-          }
-        } on DioError catch (e) {
-          _checkDioErrors(e);
-        }
-        return Center(
-          child: CircularProgressIndicator(
-            color: Colors.redAccent,
-            strokeWidth: 5,
-          ),
-        );
-      });
-}
+// FutureBuilder<Album> _responseOnCall(BuildContext context) {
+//   String url = "http://www.demoaws.picsy.in/api/";
+//   final apiClient = ApiRequest(Dio(), baseUrl: url);
+//   return FutureBuilder<Album>(
+//       future: apiClient.getResponse(),
+//       builder: (context, snapshot) {
+//         try {
+//           if (snapshot.connectionState == ConnectionState.done) {
+//             final List<BookData>? listData = snapshot.data?.response!.bookData;
+//             return _buildListView(context, listData!);
+//           } else if (snapshot.connectionState == ConnectionState.waiting) {
+//             print("Waiting for Connection..");
+//           } else if (snapshot.connectionState == ConnectionState.active) {
+//             print("Connected successfully");
+//           } else {
+//             Center(
+//               child: CircularProgressIndicator(
+//                 color: Colors.redAccent,
+//                 strokeWidth: 5,
+//               ),
+//             );
+//           }
+//         } on DioError catch (e) {
+//           _checkDioErrors(e);
+//         }
+//         return Center(
+//           child: CircularProgressIndicator(
+//             color: Colors.redAccent,
+//             strokeWidth: 5,
+//           ),
+//         );
+//       });
+// }
 
 void _checkDioErrors(DioError e) {
   if (e.type == DioErrorType.response) {
@@ -120,172 +144,184 @@ Widget _buildListView(BuildContext context, List<BookData> albums) {
   return ListView.builder(
     itemCount: albums.length,
     itemBuilder: (context, index) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.32,
-        padding: EdgeInsets.all(10),
-        child: Expanded(
-          child: Card(
-            elevation: 4,
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 30),
-                  child: Row(
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AlbumDetailsScreen(
+                      bookData: albums[index],
+                    )),
+          );
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.32,
+          padding: EdgeInsets.all(10),
+          child: Expanded(
+            child: Card(
+              elevation: 4,
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            child: Image.network(
+                              albums[index].imgHttpThumb,
+                              height: 100,
+                              width: 100,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin:
+                                EdgeInsets.only(top: 10, right: 10, left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  albums[index].yearbookName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    albums[index].yearbookDescription.desc,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Pages : ",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            "min 20 - max 50",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Est. Delivery :",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            " 5-7 working days",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                    height: 2,
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          child: Image.network(
-                            albums[index].imgHttpThumb,
-                            height: 100,
-                            width: 100,
-                          ),
+                        child: Text(
+                          albums[index].yearbookDescription.price,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                albums[index].yearbookName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text(
-                                  albums[index].yearbookDescription.desc,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: TextButton.icon(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.remove_red_eye_outlined,
+                                  color: Colors.white,
                                 ),
-                              ),
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Pages : ",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        Text(
-                                          "min 20 - max 50",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Est. Delivery :",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        Text(
-                                          " 5-7 working days",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 12),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
+                                label: Text(
+                                  "preview",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.black54))),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextButton.icon(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                                label: Text(
+                                  "create ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.redAccent))),
+                          )
+                        ],
                       )
                     ],
-                  ),
-                ),
-                Divider(
-                  color: Colors.grey,
-                  height: 2,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        albums[index].yearbookDescription.price,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: TextButton.icon(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.remove_red_eye_outlined,
-                                color: Colors.white,
-                              ),
-                              label: Text(
-                                "preview",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.black54))),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton.icon(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                              ),
-                              label: Text(
-                                "create ",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.redAccent))),
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
