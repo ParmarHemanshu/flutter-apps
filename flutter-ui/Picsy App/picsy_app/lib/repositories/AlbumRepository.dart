@@ -1,10 +1,12 @@
 
-import 'package:picsy_app/networking/ApiRequest.dart';
+import 'package:picsy_app/networking/AlbumDataGetRequest.dart';
+import 'package:picsy_app/networking/PublicApiCalls/PostApiCall.dart';
 
 class AlbumRepository{
-  late final ApiRequest apiRequest;
 
-  AlbumRepository(this.apiRequest);
+ PostApiClient postApiClient;
+ AlbumDataGetRequest albumDataGetRequest;
 
-
+ AlbumRepository( this.postApiClient,
+      this.albumDataGetRequest);
 }

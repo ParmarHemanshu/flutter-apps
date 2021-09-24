@@ -9,7 +9,13 @@ class ListViewLoading extends ListViewState{}
 
 class ListViewLoaded extends ListViewState{
 
-  final List<BookData> bookDataList;
+  final List<Data> bookDataList;
 
   ListViewLoaded(this.bookDataList);
+}
+
+class ListViewError extends ListViewState{
+  final AlertDialog alertDialog;
+
+  ListViewError(this.alertDialog);
 }

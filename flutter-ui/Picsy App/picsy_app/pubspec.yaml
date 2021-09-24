@@ -26,7 +26,8 @@ dependencies:
   retrofit: any
   json_serializable: any
   dio:
-
+  flutter_staggered_grid_view: any
+  flutter_html: any
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3

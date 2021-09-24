@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:picsy_app/cubit/AlbumScreenCubit/list_view_cubit.dart';
-import 'package:picsy_app/networking/ApiRequest.dart';
+import 'package:picsy_app/networking/AlbumDataGetRequest.dart';
+import 'package:picsy_app/networking/PublicApiCalls/PostApiCall.dart';
 import 'package:picsy_app/repositories/AlbumRepository.dart';
 import 'package:picsy_app/screens/AlbumScreen.dart';
 
@@ -12,8 +13,9 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String url = "http://www.demoaws.picsy.in/api/";
-    final apiRequest = ApiRequest(Dio(), baseUrl: url);
+    PostApiClient apiPostCall=PostApiClient(Dio(),baseUrl:"https://gorest.co.in/public/v1" );
+    AlbumDataGetRequest albumDataGetRequest=AlbumDataGetRequest(Dio(),baseurl: "http://www.demoaws.picsy.in/api/");
+
     return BottomNavigationBar(
 
       fixedColor: Colors.black,
@@ -48,7 +50,7 @@ class BottomNavBar extends StatelessWidget {
                         builder: (context) =>
                             BlocProvider(
                                 create: (context) {
-                                  return ListViewCubit(AlbumRepository(apiRequest));
+                                  return ListViewCubit(AlbumRepository(apiPostCall,albumDataGetRequest));
                                 },
                                 child: AlbumScreen())));
               },

@@ -34,14 +34,14 @@ FutureBuilder<Post> _fetchApiData(BuildContext context) {
   return FutureBuilder<Post>(
       future: apiClient.getPosts(),
       builder: (context, snapshot) {
-        final List<Datum> posts = snapshot.data!.data;
-        return buildPost(context, posts);
+        final List<Datum>? posts = snapshot.data?.data;
+        return _buildPost(context, posts!);
       });
 }
 
-ListView buildPost(BuildContext context, List<Datum>? posts) {
+ListView _buildPost(BuildContext context, List<Datum> posts) {
   return ListView.builder(
-    itemCount: posts!.length,
+    itemCount: posts.length,
     itemBuilder: (BuildContext context, int index) {
       return Container(
         color: Colors.lightBlueAccent,
@@ -54,7 +54,7 @@ ListView buildPost(BuildContext context, List<Datum>? posts) {
               Container(
                 margin: EdgeInsets.only(top: 5, left: 20, right: 20),
                 child: Text(
-                  posts[index].title,
+                  posts[index].title.toString(),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -63,7 +63,7 @@ ListView buildPost(BuildContext context, List<Datum>? posts) {
                 child: Container(
                   margin: EdgeInsets.only(top: 10, left: 20, right: 20),
                   child: Text(
-                    posts[index].body,
+                    posts[index].body.toString(),
                     style:
                         TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
                   ),

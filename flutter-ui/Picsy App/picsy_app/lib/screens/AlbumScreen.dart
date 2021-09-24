@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,7 +71,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                   if (state is ListViewInitial) {
                     return Center(
                         child: CircularProgressIndicator(
-                      color: Colors.redAccent,
+                      color: Colors.blue,
                       strokeWidth: 6,
                     ));
                   } else if (state is ListViewLoading) {
@@ -85,65 +84,22 @@ class _AlbumScreenState extends State<AlbumScreen> {
                     final albums = state.bookDataList;
                     return _buildListView(context, albums);
                   }
-                  return Text("Error");
+
+                  return Center(child: Text("Coudn't connect to server. !!"));
                 },
               ),
             )));
   }
 }
 
-// FutureBuilder<Album> _responseOnCall(BuildContext context) {
-//   String url = "http://www.demoaws.picsy.in/api/";
-//   final apiClient = ApiRequest(Dio(), baseUrl: url);
-//   return FutureBuilder<Album>(
-//       future: apiClient.getResponse(),
-//       builder: (context, snapshot) {
-//         try {
-//           if (snapshot.connectionState == ConnectionState.done) {
-//             final List<BookData>? listData = snapshot.data?.response!.bookData;
-//             return _buildListView(context, listData!);
-//           } else if (snapshot.connectionState == ConnectionState.waiting) {
-//             print("Waiting for Connection..");
-//           } else if (snapshot.connectionState == ConnectionState.active) {
-//             print("Connected successfully");
-//           } else {
-//             Center(
-//               child: CircularProgressIndicator(
-//                 color: Colors.redAccent,
-//                 strokeWidth: 5,
-//               ),
-//             );
-//           }
-//         } on DioError catch (e) {
-//           _checkDioErrors(e);
-//         }
-//         return Center(
-//           child: CircularProgressIndicator(
-//             color: Colors.redAccent,
-//             strokeWidth: 5,
-//           ),
-//         );
-//       });
-// }
-
-void _checkDioErrors(DioError e) {
-  if (e.type == DioErrorType.response) {
-    print("Response Success");
-  } else if (e.type == DioErrorType.receiveTimeout) {
-    print("Get request timeout");
-  } else if (e.type == DioErrorType.connectTimeout) {
-    print("Connection timeout");
-  } else if (e.type == DioErrorType.other) {
-    print("Dio Error !!");
-  } else {
-    print("Something Went wrong !!!");
-  }
-}
-
-Widget _buildListView(BuildContext context, List<BookData> albums) {
+Widget _buildListView(BuildContext context, List<Data> albums) {
   return ListView.builder(
     itemCount: albums.length,
     itemBuilder: (context, index) {
+      var desc = albums[index].yearbookDescription.desc;
+      if (desc == null) {
+        desc = "No description yet.";
+      }
       return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -172,7 +128,7 @@ Widget _buildListView(BuildContext context, List<BookData> albums) {
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
                             child: Image.network(
-                              albums[index].imgHttpThumb,
+                              albums[index].imgHttpThumb.toString(),
                               height: 100,
                               width: 100,
                             ),
@@ -187,7 +143,7 @@ Widget _buildListView(BuildContext context, List<BookData> albums) {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  albums[index].yearbookName,
+                                  albums[index].yearbookName.toString(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -198,7 +154,7 @@ Widget _buildListView(BuildContext context, List<BookData> albums) {
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Text(
-                                    albums[index].yearbookDescription.desc,
+                                    desc,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -275,7 +231,7 @@ Widget _buildListView(BuildContext context, List<BookData> albums) {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          albums[index].yearbookDescription.price,
+                          albums[index].yearbookDescription!.price,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
